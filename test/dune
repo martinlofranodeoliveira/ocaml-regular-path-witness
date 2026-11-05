@@ -1,0 +1,8 @@
+(test
+ (name tests)
+ (modules tests oracle)
+ (libraries regular_path_witness yojson))
+(executable
+ (name consumer)
+ (modules consumer)
+ (libraries regular_path_witness yojson))

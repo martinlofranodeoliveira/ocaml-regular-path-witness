@@ -1,0 +1,18 @@
+opam-version: "2.0"
+name: "ocaml-regular-path-witness"
+version: "0.1.0"
+synopsis: "Bounded canonical witnesses for regular-language graph paths"
+description: "An explicit regular-expression AST, bounded Thompson construction, epsilon-aware product search, and independently checked replayable witnesses."
+maintainer: "Lofrano Tecnologia"
+authors: ["Lofrano Tecnologia"]
+license: "MIT"
+homepage: "https://lofranotecnologia.com.br"
+bug-reports: "https://github.com/martinlofranodeoliveira/ocaml-regular-path-witness/issues"
+dev-repo: "git+https://github.com/martinlofranodeoliveira/ocaml-regular-path-witness.git"
+depends: [
+  "ocaml" {= "5.3.0"}
+  "dune" {= "3.24.2"}
+  "yojson" {= "3.0.0"}
+]
+build: [ ["dune" "build" "-p" name "-j2"] ]
+run-test: [ ["dune" "runtest" "-p" name "-j2"] ]

@@ -1,0 +1,43 @@
+name: offline-contract
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  qualification-gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        timeout-minutes: 2
+        with:
+          persist-credentials: false
+      - name: Official artifact preparation
+        timeout-minutes: 20
+        run: |
+          python3 scripts/fetch-artifacts.py
+          docker build --network=none -t rpw-tools:local .
+      - name: Restore exact dependencies without network
+        timeout-minutes: 15
+        run: |
+          docker run --rm --user 1000:1000 --network none --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 2 --pids-limit 256 --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m,uid=1000,gid=1000 -v "$PWD:/work" -w /work rpw-tools:local /bin/sh scripts/prepare-offline.sh
+      - name: Regression and independent oracle
+        timeout-minutes: 6
+        run: |
+          docker run --rm --user 1000:1000 --network none --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 2 --pids-limit 256 --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m,uid=1000,gid=1000 -v "$PWD:/work" -w /work rpw-tools:local /bin/sh scripts/test-offline.sh
+      - name: Asserting demo
+        timeout-minutes: 3
+        run: |
+          docker run --rm --user 1000:1000 --network none --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 2 --pids-limit 256 --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m,uid=1000,gid=1000 -v "$PWD:/work" -w /work rpw-tools:local /bin/sh scripts/demo-offline.sh --assert
+      - name: Extracted package and installed consumer
+        timeout-minutes: 6
+        run: |
+          docker run --rm --user 1000:1000 --network none --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 2 --pids-limit 256 --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m,uid=1000,gid=1000 -v "$PWD:/work" -w /work rpw-tools:local /bin/sh scripts/package-offline.sh
+      - name: Wait-authority fault in a disposable namespace
+        timeout-minutes: 1
+        run: |
+          set +e
+          docker run --rm --user 1000:1000 --network none --cap-drop ALL --security-opt no-new-privileges --memory 1g --cpus 2 --pids-limit 256 --tmpfs /tmp:rw,exec,nosuid,nodev,size=256m,uid=1000,gid=1000 -v "$PWD:/work" -w /work rpw-tools:local python3 scripts/gate.py authority-fault
+          status=$?
+          set -e
+          test "$status" -eq 79

@@ -1,0 +1,5 @@
+(executable
+ (name main)
+ (public_name regular-path-witness)
+ (package ocaml-regular-path-witness)
+ (libraries regular_path_witness yojson))

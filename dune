@@ -1,0 +1,12 @@
+(install
+ (package ocaml-regular-path-witness)
+ (section doc)
+ (files CONTRIBUTING.md SECURITY.md
+  (docs/design.md as design.md)
+  (docs/contract.md as contract.md)
+  (docs/dependencies.md as dependencies.md)
+  (docs/build-notes.md as build-notes.md)))
+(install
+ (package ocaml-regular-path-witness)
+ (section share)
+ (files (examples/query.json as query.json) (test/consumer.ml as consumer.ml)))

@@ -1,0 +1,6 @@
+(library
+ (name regular_path_witness)
+ (public_name ocaml-regular-path-witness)
+ (wrapped false)
+ (modules regular_path_witness)
+ (libraries yojson))

@@ -1,0 +1,1 @@
+{"graph":{"nodes":["s","t"],"edges":[{"id":"e","from":"s","to":"t","label":"a"}]},"start":"s","targets":["t"],"regex":{"type":"Literal","label":"a"}}

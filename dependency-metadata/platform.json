@@ -1,0 +1,15 @@
+{
+  "system": "Linux",
+  "machine": "x86_64",
+  "libc": "glibc",
+  "sigaction": {
+    "size": 152,
+    "handler_offset": 0,
+    "handler_size": 8,
+    "flags_offset": 136,
+    "flags_size": 4,
+    "sa_nocldwait": 2
+  },
+  "measurement_report": "20261105T144404Z-c3c5e3f40c6c",
+  "qualified_image_id": "sha256:b1e75b932ac40b20a07a16815dadc2a79e35c413454ea50e4f2d5bbdca00db4d"
+}
